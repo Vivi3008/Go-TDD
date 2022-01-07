@@ -5,12 +5,25 @@ import (
 )
 
 func TestHelloWorld(t *testing.T) {
-	t.Run("Test Hello World", func(t *testing.T) {
+	verifyMessageTest := func(t *testing.T, expected string, got string) {
+		t.Helper()
+
+		if expected != got {
+			t.Errorf("Expected %s, got %s", expected, got)
+		}
+	}
+
+	t.Run("Say hello to people", func(t *testing.T) {
 		result := Hello("Jane")
 		expected := "Hello Jane"
 
-		if result != expected {
-			t.Errorf("Expected %s, got %s", expected, result)
-		}
+		verifyMessageTest(t, expected, result)
+	})
+
+	t.Run("Say hello world if has empty string", func(t *testing.T) {
+		got := Hello("")
+		expected := "Hello World"
+
+		verifyMessageTest(t, expected, got)
 	})
 }

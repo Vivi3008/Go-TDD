@@ -1,5 +1,12 @@
 package helloworld
 
+const (
+	SayHello = "Hello "
+)
+
 func Hello(name string) string {
-	return "Hello " + name
+	if name == "" {
+		name = "World"
+	}
+	return SayHello + name
 }
