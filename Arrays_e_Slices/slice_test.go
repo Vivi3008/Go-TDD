@@ -16,8 +16,8 @@ func TestArrayESlice(t *testing.T) {
 		}
 	})
 	t.Run("Funcao soma tudo", func(t *testing.T) {
-		got := SomaTudo([]int{1, 3, 2}, []int{1, 4})
-		expected := []int{6, 5}
+		got := SomaTodoResto([]int{1, 2}, []int{0, 9})
+		expected := []int{2, 9}
 
 		if !reflect.DeepEqual(got, expected) {
 			t.Errorf("Expected %v, got %v", expected, got)

@@ -8,10 +8,16 @@ func Soma(numbers []int) int {
 	return total
 }
 
-func SomaTudo(numeros ...[]int) []int {
+func SomaTodoResto(numeros ...[]int) []int {
 	var soma []int
 	for _, v := range numeros {
-		soma = append(soma, Soma(v))
+		var rest []int
+		for i, j := range v {
+			if i != 0 {
+				rest = append(rest, j)
+			}
+		}
+		soma = append(soma, Soma(rest))
 	}
 	return soma
 }
