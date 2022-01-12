@@ -11,8 +11,12 @@ func Soma(numbers []int) int {
 func SomaTodoResto(numeros ...[]int) []int {
 	var soma []int
 	for _, v := range numeros {
-		final := v[1:]
-		soma = append(soma, Soma(final))
+		if len(v) == 0 {
+			soma = append(soma, 0)
+		} else {
+			final := v[1:]
+			soma = append(soma, Soma(final))
+		}
 	}
 	return soma
 }

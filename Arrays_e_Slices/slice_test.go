@@ -23,4 +23,12 @@ func TestArrayESlice(t *testing.T) {
 			t.Errorf("Expected %v, got %v", expected, got)
 		}
 	})
+	t.Run("Soma slices vazios", func(t *testing.T) {
+		got := SomaTodoResto([]int{}, []int{1, 3, 5})
+		expected := []int{0, 8}
+
+		if !reflect.DeepEqual(got, expected) {
+			t.Errorf("Expected %v, got %v", expected, got)
+		}
+	})
 }
