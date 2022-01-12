@@ -1,10 +1,12 @@
 package arrayseslices
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestArrayESlice(t *testing.T) {
 	t.Run("Array de cinco numeros", func(t *testing.T) {
-		numbers := [5]int{1, 2, 3, 4, 5}
+		numbers := []int{1, 2, 3, 4, 5}
 		got := Soma(numbers)
 		expected := 15
 
