@@ -33,6 +33,11 @@ func TestArea(t *testing.T) {
 			arg:  Circulo{10},
 			want: 314.1592653589793,
 		},
+		{
+			name: "Calcula area do triangulo",
+			arg:  Triangulo{10.5, 5},
+			want: 21,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -40,7 +45,7 @@ func TestArea(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			got := tt.arg.Area()
 			if got != tt.want {
-				t.Errorf("Expected %.2f, got %.2f", tt.want, got)
+				t.Errorf("%#v: Expected %.2f, got %.2f", tt.arg, tt.want, got)
 			}
 		})
 	}
