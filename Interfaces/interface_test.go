@@ -18,24 +18,30 @@ func TestPerimetro(t *testing.T) {
 }
 
 func TestArea(t *testing.T) {
-	calculaArea := func(t *testing.T, forma Forma, expected float64) {
-		t.Helper()
-		got := forma.Area()
-		if got != expected {
-			t.Errorf("Expected %.2f, got %.2f", expected, got)
-		}
+	testCases := []struct {
+		name string
+		arg  Forma
+		want float64
+	}{
+		{
+			name: "Calcula area retangulo",
+			arg:  Retangulo{10, 10},
+			want: 100.0,
+		},
+		{
+			name: "Calcula area do circulo",
+			arg:  Circulo{10},
+			want: 314.1592653589793,
+		},
 	}
 
-	t.Run("Calcula Area retangulo", func(t *testing.T) {
-		ret := Retangulo{
-			Larg: 10.0,
-			Alt:  10.0,
-		}
-		calculaArea(t, ret, 100.0)
-	})
-	t.Run("Calcula area circulo", func(t *testing.T) {
-		circ := Circulo{10}
-		expected := 314.1592653589793
-		calculaArea(t, circ, expected)
-	})
+	for _, tc := range testCases {
+		tt := tc
+		t.Run(tt.name, func(t *testing.T) {
+			got := tt.arg.Area()
+			if got != tt.want {
+				t.Errorf("Expected %.2f, got %.2f", tt.want, got)
+			}
+		})
+	}
 }
