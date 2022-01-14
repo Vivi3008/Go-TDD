@@ -5,19 +5,6 @@ import (
 )
 
 func TestPonteiros(t *testing.T) {
-	verificaSaldo := func(t *testing.T, c Carteira, expected string) {
-		t.Helper()
-		got := c.GetSaldo().String()
-		if got != expected {
-			t.Errorf("Expected %s, got %s", expected, got)
-		}
-	}
-
-	confirmaErro := func(t *testing.T, wantErr, err error) {
-		if err != wantErr {
-			t.Errorf("Expected %s, got %s", wantErr, err)
-		}
-	}
 	t.Run("Teste Carteira Depositar", func(t *testing.T) {
 		c := Carteira{}
 		c.Depositar(50)
@@ -37,4 +24,18 @@ func TestPonteiros(t *testing.T) {
 		verificaSaldo(t, cart, "20 BTC")
 		confirmaErro(t, ErrInsufficientLimit, err)
 	})
+}
+
+func verificaSaldo(t *testing.T, c Carteira, expected string) {
+	t.Helper()
+	got := c.GetSaldo().String()
+	if got != expected {
+		t.Errorf("Expected %s, got %s", expected, got)
+	}
+}
+
+func confirmaErro(t *testing.T, wantErr, err error) {
+	if err != wantErr {
+		t.Errorf("Expected %s, got %s", wantErr, err)
+	}
 }
