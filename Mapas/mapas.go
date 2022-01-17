@@ -4,10 +4,12 @@ import "errors"
 
 type Dicionario map[string]string
 
+var ErrPalavraInexistente = errors.New("palavra inexistente")
+
 func (d Dicionario) Busca(valor string) (string, error) {
 	palavra, existe := d[valor]
 	if !existe {
-		return "", errors.New("palavra inexistente")
+		return "", ErrPalavraInexistente
 	}
 	return palavra, nil
 }
