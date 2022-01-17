@@ -1,15 +1,24 @@
 package mapas
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestMapas(t *testing.T) {
-	t.Run("Teste Mapas", func(t *testing.T) {
-		dicionario := map[string]string{"Teste": "Isso é apenas um teste"}
+	dicionario := Dicionario{"teste": "Isso é apenas um teste", "foo": "bar", "lar": "doce lar"}
 
-		got := Busca(dicionario, "Teste")
+	t.Run("Teste Mapas palavra conhecida", func(t *testing.T) {
+		got, _ := dicionario.Busca("teste")
 		expected := "Isso é apenas um teste"
 
 		comparaStrings(t, expected, got)
+	})
+
+	t.Run("palavra desconhecida", func(t *testing.T) {
+		_, err := dicionario.Busca("oi")
+		if err == nil {
+			t.Errorf("Expected err not be nil")
+		}
 	})
 }
 
