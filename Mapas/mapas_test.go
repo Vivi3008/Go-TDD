@@ -37,6 +37,32 @@ func TestMapas(t *testing.T) {
 		comparaStrings(t, got, "doce lar")
 	})
 
+	t.Run("Atualiza uma definição existente", func(t *testing.T) {
+		dic := Dicionario{"hello": "Hello World!"}
+		errUpd := dic.Atualiza("hello", "Olá mundo!")
+
+		comparaErro(t, nil, errUpd)
+
+		got, err := dic.Busca("hello")
+		expected := "Olá mundo!"
+
+		comparaErro(t, nil, err)
+		comparaStrings(t, expected, got)
+	})
+
+	t.Run("Atualiza uma palavra nova", func(t *testing.T) {
+		err := dicionario.Atualiza("hello", "World")
+
+		comparaErro(t, ErrAtualizaPalavra, err)
+	})
+
+	t.Run("Teste Deleta uma palavra", func(t *testing.T) {
+		dic := Dicionario{"teste": "testando 1,2,3", "foo": "bar", "home": "sweet home"}
+		dic.Deleta("home")
+
+		_, err := dic.Busca("home")
+		comparaErro(t, ErrPalavraInexistente, err)
+	})
 }
 
 func comparaStrings(t *testing.T, expected, got string) {

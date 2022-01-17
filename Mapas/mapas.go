@@ -1,13 +1,18 @@
 package mapas
 
-import "errors"
-
 type Dicionario map[string]string
 
-var (
-	ErrPalavraInexistente = errors.New("palavra inexistente")
-	ErrPalavraJaExiste    = errors.New("essa palavra já existe")
+type ErrDicionario string
+
+const (
+	ErrPalavraInexistente ErrDicionario = "palavra inexistente"
+	ErrPalavraJaExiste    ErrDicionario = "essa palavra já existe"
+	ErrAtualizaPalavra    ErrDicionario = "nao é possivel atualizar, palavra inexistente"
 )
+
+func (e ErrDicionario) Error() string {
+	return string(e)
+}
 
 func (d Dicionario) Busca(valor string) (string, error) {
 	palavra, existe := d[valor]
@@ -15,6 +20,17 @@ func (d Dicionario) Busca(valor string) (string, error) {
 		return "", ErrPalavraInexistente
 	}
 	return palavra, nil
+}
+
+func (d Dicionario) Atualiza(chave, valor string) error {
+	_, err := d.Busca(chave)
+
+	if err == ErrPalavraInexistente {
+		return ErrAtualizaPalavra
+	}
+
+	d[chave] = valor
+	return nil
 }
 
 func (d Dicionario) Adiciona(chave, valor string) error {
@@ -26,4 +42,8 @@ func (d Dicionario) Adiciona(chave, valor string) error {
 
 	d[chave] = valor
 	return nil
+}
+
+func (d Dicionario) Deleta(chave string) {
+	delete(d, chave)
 }
