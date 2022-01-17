@@ -1,5 +1,13 @@
 package mapas
 
-func Busca(mapa map[string]string, valor string) string {
-	return mapa[valor]
+import "errors"
+
+type Dicionario map[string]string
+
+func (d Dicionario) Busca(valor string) (string, error) {
+	palavra, existe := d[valor]
+	if !existe {
+		return "", errors.New("palavra inexistente")
+	}
+	return palavra, nil
 }
