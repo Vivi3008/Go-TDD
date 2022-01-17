@@ -19,6 +19,24 @@ func TestMapas(t *testing.T) {
 		_, err := dicionario.Busca("oi")
 		comparaErro(t, ErrPalavraInexistente, err)
 	})
+
+	t.Run("adiciona nova palavra", func(t *testing.T) {
+		word := Dicionario{}
+		word.Adiciona("oi", "vou responder Oi!")
+		got, err := word.Busca("oi")
+		expected := "vou responder Oi!"
+		comparaErro(t, nil, err)
+		comparaStrings(t, expected, got)
+	})
+
+	t.Run("nao adiciona palavra ja existente", func(t *testing.T) {
+		errAdd := dicionario.Adiciona("lar", "quero mudar definicao")
+		comparaErro(t, ErrPalavraJaExiste, errAdd)
+		got, err := dicionario.Busca("lar")
+		comparaErro(t, nil, err)
+		comparaStrings(t, got, "doce lar")
+	})
+
 }
 
 func comparaStrings(t *testing.T, expected, got string) {
