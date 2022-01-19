@@ -12,7 +12,10 @@ func TestContagem(t *testing.T) {
 		Contagem(buffer)
 
 		result := buffer.String()
-		expected := "3"
+		expected := `3
+2
+1
+vai!`
 
 		if result != expected {
 			t.Errorf("Expected %s, got %s", expected, result)
