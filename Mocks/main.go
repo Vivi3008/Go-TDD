@@ -44,3 +44,5 @@ func Contagem(saida io.Writer, sleeper Sleeper) {
 	sleeper.Sleep()
 	fmt.Fprint(saida, ultimaPalavra)
 }
+
+//https://larien.gitbook.io/aprenda-go-com-testes/primeiros-passos-com-go/mocks#ainda-temos-alguns-problemas
