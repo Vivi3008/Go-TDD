@@ -36,6 +36,22 @@ func (s *SleeperSpy) Sleep() {
 	s.Chamadas++
 }
 
+type SpyContagemOperacoes struct {
+	Chamadas []string
+}
+
+const escrita = "escrita"
+const pausa = "pausa"
+
+func (s *SpyContagemOperacoes) Sleep() {
+	s.Chamadas = append(s.Chamadas, pausa)
+}
+
+func (s *SpyContagemOperacoes) Write(p []byte) (n int, err error) {
+	s.Chamadas = append(s.Chamadas, escrita)
+	return
+}
+
 func Contagem(saida io.Writer, sleeper Sleeper) {
 	for i := inicio; i >= 1; i-- {
 		sleeper.Sleep()
@@ -45,4 +61,4 @@ func Contagem(saida io.Writer, sleeper Sleeper) {
 	fmt.Fprint(saida, ultimaPalavra)
 }
 
-//https://larien.gitbook.io/aprenda-go-com-testes/primeiros-passos-com-go/mocks#ainda-temos-alguns-problemas
+// https://larien.gitbook.io/aprenda-go-com-testes/primeiros-passos-com-go/mocks#ainda-temos-alguns-problemas
