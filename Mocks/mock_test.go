@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestContagem(t *testing.T) {
@@ -39,6 +40,18 @@ vai!`
 
 		if !reflect.DeepEqual(expected, spy.Chamadas) {
 			t.Errorf("Expected %s, got %s", expected, spy.Chamadas)
+		}
+	})
+	t.Run("Teste sleeper configuravel", func(t *testing.T) {
+		tempo := 5 * time.Second
+		tempoSpy := &TempoSpy{}
+
+		sleeper := SleeperConfiguravel{tempo, tempoSpy.Pausa}
+
+		sleeper.Pausa()
+
+		if tempoSpy.duracaoPausa != tempo {
+			t.Errorf("deveria ter pausado %v, mas pausou por %v", tempo, tempoSpy.duracaoPausa)
 		}
 	})
 }

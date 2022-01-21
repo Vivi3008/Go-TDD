@@ -11,25 +11,38 @@ const ultimaPalavra = "vai!"
 const inicio = 3
 
 func main() {
-	sl := SleeperPadrao{t: (1 * time.Second)}
-	Contagem(os.Stdout, &sl)
+	sl := &SleeperConfiguravel{1 * time.Second, time.Sleep}
+	Contagem(os.Stdout, sl)
 }
 
 type Sleeper interface {
 	Sleep()
 }
 
-type SleeperPadrao struct {
-	t time.Duration
-}
-
-func (s *SleeperPadrao) Sleep() {
-	time.Sleep(s.t)
+func (s *SleeperConfiguravel) Sleep() {
+	s.pausa(s.duracao)
 }
 
 //mock
 type SleeperSpy struct {
 	Chamadas int
+}
+
+type SleeperConfiguravel struct {
+	duracao time.Duration
+	pausa   func(time.Duration)
+}
+
+type TempoSpy struct {
+	duracaoPausa time.Duration
+}
+
+func (t *TempoSpy) Pausa(duracao time.Duration) {
+	t.duracaoPausa = duracao
+}
+
+func (s *SleeperConfiguravel) Pausa() {
+	s.pausa(s.duracao)
 }
 
 func (s *SleeperSpy) Sleep() {
@@ -60,5 +73,3 @@ func Contagem(saida io.Writer, sleeper Sleeper) {
 	sleeper.Sleep()
 	fmt.Fprint(saida, ultimaPalavra)
 }
-
-// https://larien.gitbook.io/aprenda-go-com-testes/primeiros-passos-com-go/mocks#ainda-temos-alguns-problemas
