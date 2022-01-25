@@ -1,19 +1,26 @@
 package concorrencia
 
-import "time"
-
 type VerificadorWebsites func(string) bool
+
+type resultado struct {
+	string
+	bool
+}
 
 func VerificaWebsites(vw VerificadorWebsites, urls []string) map[string]bool {
 	results := make(map[string]bool)
+	canalResultado := make(chan resultado)
 
 	for _, url := range urls {
 		go func(u string) {
-			results[u] = vw(u)
+			canalResultado <- resultado{u, vw(u)}
 		}(url)
 	}
 
-	time.Sleep(2 * time.Second)
+	for i := 0; i < len(urls); i++ {
+		resultado := <-canalResultado
+		results[resultado.string] = resultado.bool
+	}
 
 	return results
 }
