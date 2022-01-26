@@ -6,16 +6,17 @@ import (
 )
 
 func Corredor(url1, url2 string) string {
-	inicioA := time.Now()
-	http.Get(url1)
-	duracaoA := time.Since(inicioA)
+	duracaoUrl1 := medirTempoResposta(url1)
+	duracaoUrl2 := medirTempoResposta(url2)
 
-	inicioB := time.Now()
-	http.Get(url2)
-	duracaoB := time.Since(inicioB)
-
-	if duracaoA > duracaoB {
+	if duracaoUrl1 > duracaoUrl2 {
 		return url2
 	}
 	return url1
+}
+
+func medirTempoResposta(url string) time.Duration {
+	inicio := time.Now()
+	http.Get(url)
+	return time.Since(inicio)
 }
