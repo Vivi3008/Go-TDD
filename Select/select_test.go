@@ -8,17 +8,13 @@ import (
 )
 
 func TestCorredor(t *testing.T) {
-	servidorLento := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		time.Sleep(20 * time.Second)
-		rw.WriteHeader(http.StatusOK)
-	}))
-
-	servidorRapido := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		time.Sleep(2 * time.Millisecond)
-		rw.WriteHeader(http.StatusOK)
-	}))
-
 	t.Run("Teste corredor", func(t *testing.T) {
+		servidorLento := CriarServidorComAtraso(20 * time.Millisecond)
+		servidorRapido := CriarServidorComAtraso(0 * time.Millisecond)
+
+		defer servidorLento.Close()
+		defer servidorRapido.Close()
+
 		urlRapida := servidorRapido.URL
 		urlDevagar := servidorLento.URL
 
@@ -28,7 +24,12 @@ func TestCorredor(t *testing.T) {
 		if got != expected {
 			t.Errorf("Expected %s, got %s", expected, got)
 		}
-		servidorLento.Close()
-		servidorRapido.Close()
 	})
+}
+
+func CriarServidorComAtraso(atraso time.Duration) *httptest.Server {
+	return httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		time.Sleep(atraso)
+		rw.WriteHeader(http.StatusOK)
+	}))
 }
