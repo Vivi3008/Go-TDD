@@ -1,22 +1,35 @@
 package selects
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 )
 
-func Corredor(url1, url2 string) string {
-	duracaoUrl1 := medirTempoResposta(url1)
-	duracaoUrl2 := medirTempoResposta(url2)
+var tempoLimiteDez = 10 * time.Second
 
-	if duracaoUrl1 > duracaoUrl2 {
-		return url2
-	}
-	return url1
+func Corredor(url1, url2 string) (string, error) {
+	return Configuravel(url1, url2, tempoLimiteDez)
 }
 
-func medirTempoResposta(url string) time.Duration {
-	inicio := time.Now()
-	http.Get(url)
-	return time.Since(inicio)
+func Configuravel(url1, url2 string, tempoLimite time.Duration) (string, error) {
+	select {
+	case <-ping(url1):
+		return url1, nil
+	case <-ping(url2):
+		return url2, nil
+	case <-time.After(tempoLimite):
+		return "", fmt.Errorf("request took more than 10 seconds")
+	}
+}
+
+func ping(url string) chan bool {
+	canal := make(chan bool)
+
+	go func(u string) {
+		http.Get(u)
+		canal <- true
+	}(url)
+
+	return canal
 }

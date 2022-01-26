@@ -19,11 +19,24 @@ func TestCorredor(t *testing.T) {
 		urlDevagar := servidorLento.URL
 
 		expected := urlRapida
-		got := Corredor(urlDevagar, urlRapida)
+		got, _ := Corredor(urlDevagar, urlRapida)
 
 		if got != expected {
 			t.Errorf("Expected %s, got %s", expected, got)
 		}
+	})
+
+	t.Run("Deve retornar um erro se a requisicao demorar mais de 10s", func(t *testing.T) {
+		servidorA := CriarServidorComAtraso(25 * time.Millisecond)
+
+		defer servidorA.Close()
+
+		_, err := Configuravel(servidorA.URL, servidorA.URL, 20*time.Millisecond)
+
+		if err == nil {
+			t.Error("Expected error if request duration is greater than 10 seconds")
+		}
+
 	})
 }
 
