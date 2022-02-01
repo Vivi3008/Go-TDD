@@ -5,6 +5,16 @@ import (
 	"testing"
 )
 
+type Pessoa struct {
+	Nome string
+	Perfil
+}
+
+type Perfil struct {
+	Idade  int
+	Cidade string
+}
+
 func TestReflection(t *testing.T) {
 	casos := []struct {
 		Name string
@@ -25,6 +35,22 @@ func TestReflection(t *testing.T) {
 				Sobrenome string
 			}{"Chris", "Oliver"},
 			want: []string{"Chris", "Oliver"},
+		},
+		{
+			Name: "Struct sem campo tipo string",
+			args: struct {
+				Nome  string
+				Idade int
+			}{"Chris", 36},
+			want: []string{"Chris"},
+		},
+		{
+			Name: "Struct aninhada",
+			args: Pessoa{
+				"Chris",
+				Perfil{36, "Goiânia"},
+			},
+			want: []string{"Chris", "Goiânia"},
 		},
 	}
 
