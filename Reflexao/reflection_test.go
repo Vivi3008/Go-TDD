@@ -52,6 +52,14 @@ func TestReflection(t *testing.T) {
 			},
 			want: []string{"Chris", "Goiânia"},
 		},
+		{
+			Name: "Ponteiros para coisas",
+			args: &Pessoa{
+				"Chris",
+				Perfil{36, "Goiânia"},
+			},
+			want: []string{"Chris", "Goiânia"},
+		},
 	}
 
 	for _, tc := range casos {

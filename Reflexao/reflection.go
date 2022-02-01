@@ -3,7 +3,7 @@ package reflexao
 import "reflect"
 
 func Percorre(x interface{}, fn func(entrada string)) {
-	valor := reflect.ValueOf(x)
+	valor := extractValue(x)
 
 	for i := 0; i < valor.NumField(); i++ {
 		campo := valor.Field(i)
@@ -16,3 +16,14 @@ func Percorre(x interface{}, fn func(entrada string)) {
 		}
 	}
 }
+
+func extractValue(x interface{}) reflect.Value {
+	valor := reflect.ValueOf(x)
+
+	if valor.Kind() == reflect.Ptr {
+		valor = valor.Elem()
+	}
+	return valor
+}
+
+//https://larien.gitbook.io/aprenda-go-com-testes/primeiros-passos-com-go/reflection#escreva-o-teste-primeiro-6
