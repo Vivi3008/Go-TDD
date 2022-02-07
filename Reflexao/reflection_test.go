@@ -60,6 +60,12 @@ func TestReflection(t *testing.T) {
 			},
 			want: []string{"Chris", "Goiânia"},
 		},
+		{
+			Name: "Tratando slices",
+			args: []Perfil{{36, "Goiânia"}, {33, "Londres"},
+				{34, "Reykjavík"}},
+			want: []string{"Goiânia", "Londres", "Reykjavík"},
+		},
 	}
 
 	for _, tc := range casos {

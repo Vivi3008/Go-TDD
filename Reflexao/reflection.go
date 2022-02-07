@@ -5,15 +5,22 @@ import "reflect"
 func Percorre(x interface{}, fn func(entrada string)) {
 	valor := extractValue(x)
 
-	for i := 0; i < valor.NumField(); i++ {
-		campo := valor.Field(i)
+	qtdValores := 0
+	var obtemCampo func(int) reflect.Value
 
-		switch campo.Kind() {
-		case reflect.String:
-			fn(campo.String())
-		case reflect.Struct:
-			Percorre(campo.Interface(), fn)
-		}
+	switch valor.Kind() {
+	case reflect.String:
+		fn(valor.String())
+	case reflect.Slice:
+		qtdValores = valor.Len()
+		obtemCampo = valor.Index
+	case reflect.Struct:
+		qtdValores = valor.NumField()
+		obtemCampo = valor.Field
+	}
+
+	for i := 0; i < qtdValores; i++ {
+		Percorre(obtemCampo(i).Interface(), fn)
 	}
 }
 
