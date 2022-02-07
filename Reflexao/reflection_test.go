@@ -66,6 +66,11 @@ func TestReflection(t *testing.T) {
 				{34, "Reykjavík"}},
 			want: []string{"Goiânia", "Londres", "Reykjavík"},
 		},
+		{
+			Name: "Arrays",
+			args: [2]Perfil{{36, "Goiânia"}, {33, "Londres"}},
+			want: []string{"Goiânia", "Londres"},
+		},
 	}
 
 	for _, tc := range casos {
@@ -81,6 +86,29 @@ func TestReflection(t *testing.T) {
 				t.Errorf("Expected %v, got %v", tt.want, result)
 			}
 		})
+	}
 
+	t.Run("Com maps", func(t *testing.T) {
+		mapA := map[string]string{"Foo": "Bar", "Baz": "Boz"}
+		var result []string
+
+		Percorre(mapA, func(entrada string) {
+			result = append(result, entrada)
+		})
+
+		verificaSeContem(t, "Bar", result)
+		verificaSeContem(t, "Boz", result)
+	})
+}
+
+func verificaSeContem(t *testing.T, agulha string, palheiro []string) {
+	var contem bool
+	for _, v := range palheiro {
+		if v == agulha {
+			contem = true
+		}
+	}
+	if !contem {
+		t.Errorf("Expected found %s", agulha)
 	}
 }
