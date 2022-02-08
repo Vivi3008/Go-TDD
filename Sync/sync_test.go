@@ -10,8 +10,14 @@ func TestSync(t *testing.T) {
 		contador.Incrementa()
 		contador.Incrementa()
 
-		if contador.Valor() != 3 {
-			t.Errorf("Expected contador have %v, but have %v", 3, contador.Valor())
-		}
+		verificaContador(t, 3, contador)
 	})
+}
+
+func verificaContador(t *testing.T, expected int, contador Contador) {
+	t.Helper()
+
+	if contador.Valor() != expected {
+		t.Errorf("Expected contador have %v, but have %v", expected, contador.Valor())
+	}
 }
