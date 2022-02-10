@@ -7,7 +7,7 @@ import (
 
 func TestSync(t *testing.T) {
 	t.Run("Teste contador", func(t *testing.T) {
-		contador := Contador{}
+		contador := NewContador()
 
 		contador.Incrementa()
 		contador.Incrementa()
@@ -18,7 +18,7 @@ func TestSync(t *testing.T) {
 
 	t.Run("roda concorrentemente em segurança", func(t *testing.T) {
 		contagemEsperada := 1000
-		contador := Contador{}
+		contador := NewContador()
 
 		var wg sync.WaitGroup
 		wg.Add(contagemEsperada)
@@ -35,7 +35,7 @@ func TestSync(t *testing.T) {
 	})
 }
 
-func verificaContador(t *testing.T, expected int, contador Contador) {
+func verificaContador(t *testing.T, expected int, contador *Contador) {
 	t.Helper()
 
 	if contador.Valor() != expected {

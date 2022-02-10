@@ -7,6 +7,10 @@ type Contador struct {
 	valor int
 }
 
+func NewContador() *Contador {
+	return &Contador{}
+}
+
 func (c *Contador) Incrementa() {
 	c.mu.Lock()
 	defer c.mu.Unlock()
