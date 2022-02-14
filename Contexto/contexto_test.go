@@ -44,10 +44,10 @@ func TestContexto(t *testing.T) {
 
 		cancellingCtx, cancel := context.WithCancel(request.Context())
 		time.AfterFunc(5*time.Millisecond, cancel)
-		request.WithContext(cancellingCtx)
+		rqcopy := request.WithContext(cancellingCtx)
 
 		response := httptest.NewRecorder()
-		svr.ServeHTTP(response, request)
+		svr.ServeHTTP(response, rqcopy)
 
 		if !store.cancelled {
 			t.Errorf("Store nao foi avisada para cancelar")
