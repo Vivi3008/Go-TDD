@@ -1,32 +1,22 @@
 package contexto
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 )
 
 type Store interface {
-	Fetch() string
-	Cancel()
+	Fetch(ctx context.Context) (string, error)
 }
 
 func Server(store Store) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ctx := r.Context()
-
-		data := make(chan string, 1)
-
-		go func() {
-			data <- store.Fetch()
-		}()
-
-		select {
-		case d := <-data:
-			fmt.Fprint(w, d)
-		case <-ctx.Done():
-			store.Cancel()
+		result, err := store.Fetch(r.Context())
+		if err != nil {
+			fmt.Printf("error to request: %v\n", err)
+			return
 		}
+		fmt.Fprint(w, result)
 	}
 }
-
-//https://larien.gitbook.io/aprenda-go-com-testes/primeiros-passos-com-go/contexto#escreva-o-teste-primeiro-1
